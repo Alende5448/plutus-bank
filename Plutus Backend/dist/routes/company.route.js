@@ -1,0 +1,23 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const companyQueryController_1 = require("../controllers/company/companyQueryController");
+const companyMutationController_1 = require("../controllers/company/companyMutationController");
+const auth_1 = require("../utils/auth");
+const uploadImage_1 = require("../middleware/uploadImage");
+const companyMutationController_2 = require("../controllers/company/companyMutationController");
+const auth_2 = require("../middleware/auth");
+const clientQueryController_1 = require("../controllers/client/clientQueryController");
+const router = express_1.default.Router();
+router.post('/create', auth_1.isAdmin, companyMutationController_2.createCompany);
+router.delete('/delete/:id', auth_1.isAdmin, companyMutationController_2.deleteCompany);
+router.get('/get-companies', auth_1.isAdmin, companyQueryController_1.getAllCompanies);
+router.post('/login', companyMutationController_1.loginCompany);
+router.put('/updateProfile', companyMutationController_1.updateCompanyProfile);
+router.get('/getCompanyInfo', companyQueryController_1.getCompanyInfo);
+router.put('/profileImage', auth_2.companyAuth, uploadImage_1.upload.single('image'), companyMutationController_1.createCompanyImage);
+router.get('/allCompanyInfo', auth_2.auth, clientQueryController_1.getCompanyDetails);
+exports.default = router;
